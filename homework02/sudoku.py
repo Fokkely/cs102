@@ -19,7 +19,7 @@ def create_grid(puzzle: str) -> tp.List[tp.List[str]]:
 
 
 def display(grid: tp.List[tp.List[str]]) -> None:
-    """Вывод Судоку """
+    """Вывод Судоку"""
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
@@ -44,14 +44,15 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
 
     arrs = []
     while len(values) >= n:
-        pice = values[:n]
-        arrs.append(pice)
+        piece = values[:n]
+        arrs.append(piece)
         values = values[n:]
     return arrs
 
 
 def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
-    """Возвращает все значения для номера строки, указанной в pos
+    """
+    Возвращает все значения для номера строки, указанной в pos
     >>> get_row([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']], (0, 0))
     ['1', '2', '.']
     >>> get_row([['1', '2', '3'], ['4', '.', '6'], ['7', '8', '9']], (1, 0))
@@ -59,25 +60,15 @@ def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     >>> get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0))
     ['.', '8', '9']
     """
-    arrs = []
-    index = pos[0]
-    while len(grid[index]) > 2:
-        a = grid[index]
-        piece = a[:3]
-        arrs.append(piece)
-        grid[index] = a[3:]
-    if index < 3:
-        check = 0
-    elif index > 2 & index < 6:
-        check = 1
-    else:
-        check = 2
 
-    return arrs[check]
+    x = pos[0]
+    out = grid[x]
+    return out
 
 
 def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
-    """Возвращает все значения для номера столбца, указанного в pos
+    """
+    Возвращает все значения для номера столбца, указанного в pos
     >>> get_col([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']], (0, 0))
     ['1', '4', '7']
     >>> get_col([['1', '2', '3'], ['4', '.', '6'], ['7', '8', '9']], (0, 1))
@@ -85,25 +76,13 @@ def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     >>> get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2))
     ['3', '6', '9']
     """
-    arrs = []
-    indey = pos[1]
+    y = pos[1]
     col = []
     for i in grid:
         a = i
-        piece = a[indey]
+        piece = a[y]
         col.append(piece)
-    while len(col) > 2:
-        a = col
-        piece = a[:3]
-        arrs.append(piece)
-        col = a[3:]
-    if indey < 3:
-        check = 0
-    elif indey > 2 & indey < 6:
-        check = 1
-    else:
-        check = 2
-    return arrs[check]
+    return col
 
 
 def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
@@ -116,7 +95,29 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
-    pass
+    out = []
+    x = pos[0]
+    y = pos[1]
+    for i in range(3):
+        newpos = (3 * (x // 4) + i, y)
+        # print(newpos)
+        r = get_row(grid, newpos)
+        # print(r)
+        arrs = []
+        while len(r) > 2:
+            piece = r[:3]
+            arrs.append(piece)
+            r = r[3:]
+        if y < 3:
+            check = 0
+        elif (y > 2) and (y < 6):
+            check = 1
+        else:
+            check = 2
+        rbl = arrs[check]
+        for j in range(3):
+            out.append(rbl[j])
+    return out
 
 
 def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[int, int]]:

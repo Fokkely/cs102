@@ -1,6 +1,3 @@
-.github/
 .idea/
-homework01/tests/__init.py
-homework01/tests/test.caesar.py
-homework01/tests/test.rsa.py
-homework01/tests/test.rsa.pyc
+homework01/tests/
+.DS_Store

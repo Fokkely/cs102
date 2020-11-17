@@ -155,7 +155,6 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     if not empty_pos:
         return grid
     for i in find_possible_values(grid, empty_pos):
-        # print(find_possible_values(grid, empty_pos))
         grid[empty_pos[0]][empty_pos[1]] = i
         solution = solve(grid)
         if solution:

@@ -18,16 +18,17 @@ def create_grid(puzzle: str) -> tp.List[tp.List[str]]:
     return grid
 
 
+# noinspection PyPackageRequirements
 def display(grid: tp.List[tp.List[str]]) -> None:
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
         print(
             "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "")
-                for col in range(9)
+                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
             )
         )
+        # noinspection PyPackageRequirements
         if str(row) in "25":
             print(line)
     print()
@@ -130,9 +131,7 @@ def find_empty_positions(
     return None
 
 
-def find_possible_values(
-    grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]
-) -> tp.Set[str]:
+def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
     """
     >>> grid = read_sudoku('puzzle1.txt')
     >>> values = find_possible_values(grid, (0,2))
@@ -143,9 +142,7 @@ def find_possible_values(
     True
     """
     possible_val = set("123456789")
-    return possible_val.difference(
-        get_row(grid, pos), get_col(grid, pos), get_block(grid, pos)
-    )
+    return possible_val.difference(get_row(grid, pos), get_col(grid, pos), get_block(grid, pos))
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:

@@ -15,7 +15,6 @@ class GameOfLife:
         randomize: bool = True,
         max_generations: Optional[float] = float("inf"),
     ) -> None:
-
         # Размер клеточного поля
         self.rows, self.cols = size
         # Предыдущее поколение клеток
@@ -30,7 +29,10 @@ class GameOfLife:
     def create_grid(self, randomize: bool = False) -> Grid:
 
         if randomize == True:
-            return [[random.randint(0, 1) for x in range(self.cols)] for _ in range(self.rows)]
+            return [
+                [random.randint(0, 1) for x in range(self.cols)]
+                for _ in range(self.rows)
+            ]
         else:
             return [[0 for _ in range(self.cols)] for _ in range(self.rows)]
 
@@ -39,7 +41,11 @@ class GameOfLife:
         row, col = cell
         for l in [-1, 0, 1]:
             for k in [-1, 0, 1]:
-                if 0 <= row + l < self.rows and 0 <= col + k < self.cols and (l, k) != (0, 0):
+                if (
+                    0 <= row + l < self.rows
+                    and 0 <= col + k < self.cols
+                    and (l, k) != (0, 0)
+                ):
                     neighbours.append(self.curr_generation[row + l][col + k])
         return neighbours
 
@@ -84,6 +90,7 @@ class GameOfLife:
         with open(filename) as file:
             grid = [[int(x) for x in list(rw)] for rw in file.readline()]
         row, col = len(grid), len(grid[0])
+
         game = GameOfLife((row, col))
         game.curr_generation = grid
         return game

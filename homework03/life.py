@@ -15,6 +15,7 @@ class GameOfLife:
         randomize: bool = True,
         max_generations: Optional[float] = float("inf"),
     ) -> None:
+
         # Размер клеточного поля
         self.rows, self.cols = size
         # Предыдущее поколение клеток
@@ -83,7 +84,6 @@ class GameOfLife:
         with open(filename) as file:
             grid = [[int(x) for x in list(rw)] for rw in file.readline()]
         row, col = len(grid), len(grid[0])
-
         game = GameOfLife((row, col))
         game.curr_generation = grid
         return game

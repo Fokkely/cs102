@@ -27,8 +27,6 @@ class GameOfLife:
         # Текущее число поколений
         self.generations = 1
 
-        
-
     def create_grid(self, randomize: bool = False) -> Grid:
 
         if randomize == True:

@@ -3,8 +3,9 @@ import operator
 import os
 import pathlib
 import struct
-import typing as tp
 import sys
+import typing as tp
+
 from pyvcs.objects import hash_object
 
 

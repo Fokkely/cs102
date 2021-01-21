@@ -6,10 +6,11 @@ import stat
 import typing as tp
 import zlib
 
-# import os
-
 from pyvcs.refs import update_ref
 from pyvcs.repo import repo_find
+
+# import os
+
 
 
 def hash_object(data: bytes, fmt: str, write: bool = False) -> str:

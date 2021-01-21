@@ -3,9 +3,8 @@ import operator
 import os
 import pathlib
 import struct
-import sys
 import typing as tp
-
+import sys
 from pyvcs.objects import hash_object
 
 
@@ -134,9 +133,11 @@ def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
 
 
 def write_index(gitdir: pathlib.Path, entries: tp.List[GitIndexEntry]) -> None:
+    # PUT YOUR CODE HERE
     signature = b"DIRC"
     version = 2
     header = struct.pack("!4sLL", signature, version, len(entries))
+    # fheader = struct.unpack("!4sLL",header)
     payload = []
     for i in entries:
         payload.append(GitIndexEntry.pack(i))
@@ -149,6 +150,7 @@ def write_index(gitdir: pathlib.Path, entries: tp.List[GitIndexEntry]) -> None:
 
 
 def ls_files(gitdir: pathlib.Path, details: bool = False) -> None:
+    # PUT YOUR CODE HERE
     objs = read_index(gitdir)
     resdet = []
     if details:

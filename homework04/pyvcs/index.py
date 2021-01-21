@@ -132,7 +132,6 @@ def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
     return res
 
 
-
 def write_index(gitdir: pathlib.Path, entries: tp.List[GitIndexEntry]) -> None:
     signature = b"DIRC"
     version = 2

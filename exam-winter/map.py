@@ -2,7 +2,7 @@ import sys
 
 
 def decode_from_emoji(emoji):
-    if emoji == '☒':
+    if emoji == "☒":
         return -1
     else:
         return 0
@@ -10,19 +10,20 @@ def decode_from_emoji(emoji):
 
 def encode_to_emoji(char):
     if char == -1:
-        return '☒'
+        return "☒"
     elif char == -2:
-        return '☺'
+        return "☺"
     elif char == -3:
-        return '☼'
+        return "☼"
     else:
-        return '.'
+        return "."
+
 
 try:
     file_name = sys.argv[1]
 except IndexError:
-    file_name = '1.map'
-f_in = open(file_name, 'r', encoding='utf-8')
+    file_name = "1.map"
+f_in = open(file_name, "r", encoding="utf-8")
 map = []
 line = f_in.readline()
 x, y, start_x, start_y, finish_x, finish_y = 0, 0, 0, 0, 0, 0
@@ -31,10 +32,10 @@ while line:
     x = 0
     line_arr = []
     for c in line:
-        if c != '\n':
-            if c == '☺':
+        if c != "\n":
+            if c == "☺":
                 start_x, start_y = x, y
-            elif c == '☼':
+            elif c == "☼":
                 finish_x, finish_y = x, y
             line_arr.append(decode_from_emoji(c))
             x += 1
@@ -101,7 +102,7 @@ map[finish_y][finish_x] = -3
 
 for line in map:
     for c in line:
-        print(encode_to_emoji(c), end='')
+        print(encode_to_emoji(c), end="")
     print()
 
 f_in.close()

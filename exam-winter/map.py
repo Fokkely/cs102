@@ -19,11 +19,7 @@ def encode_to_emoji(char):
         return "."
 
 
-try:
-    file_name = sys.argv[1]
-except IndexError:
-    file_name = "1.map"
-f_in = open(file_name, "r", encoding="utf-8")
+f_in = open('1.map', "r", encoding="utf-8")
 map = []
 line = f_in.readline()
 x, y, start_x, start_y, finish_x, finish_y = 0, 0, 0, 0, 0, 0
@@ -63,7 +59,7 @@ def wave(x, y, cur, map):
     return map
 
 
-def rewind(map):
+def rewind(map, finish_x, finish_y):
     if map[finish_y][finish_x] != 0:
         x, y = finish_x, finish_y
         while (x, y) != (start_x, start_y):
@@ -97,7 +93,7 @@ def rewind(map):
 
 wave(start_x, start_y, 1, map)
 
-rewind(map)
+rewind(map, finish_x, finish_y)
 map[finish_y][finish_x] = -3
 
 for line in map:

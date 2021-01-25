@@ -81,7 +81,7 @@ def get_mutual(
         response = session.get(f"friends.getMutual", params=params)
         if "error" in response.json() or not response.ok:
             raise APIError(response.json()["error"]["error_msg"])
-        return response.json()["response"]
+    return response.json()["response"]
 
     result: tp.List[MutualFriends] = []
     range_ = range(0, len(target_uids), 100)  # type: ignore

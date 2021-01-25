@@ -109,7 +109,7 @@ def get_mutual(
                 "v": config.VK_CONFIG["version"],
             },
         )
-        if "error" in response.json() or not response.ok:
+    if "error" in response.json() or not response.ok:
         raise APIError(response.json()["error"]["error_msg"])
     return FriendsResponse(**response.json()["response"])
 

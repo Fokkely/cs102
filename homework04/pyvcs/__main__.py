@@ -58,15 +58,6 @@ def add_cat_file_subparser(subparsers) -> None:
     )
 
     group = cat_file_subparser.add_mutually_exclusive_group(required=True)
-    # NOTE: Mutually exclusive arguments must be optional
-    # group.add_argument(
-    #     "type",
-    #     metavar="<type>",
-    #     choices=["blob", "commit", "tag", "tree"],
-    #     default="blob",
-    #     nargs="?",
-    #     help="Specify the type",
-    # )
     group.add_argument(
         "-p",
         dest="pretty",

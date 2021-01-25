@@ -3,7 +3,8 @@ import math
 import time
 import typing as tp
 
-from vkapi import config, session
+from vkapi import session
+from vkapi.config import VK_CONFIG
 from vkapi.exceptions import APIError
 
 QueryParams = tp.Optional[tp.Dict[str, tp.Union[str, int]]]
@@ -16,7 +17,7 @@ class FriendsResponse:
 
 
 def get_friends(
-    user_id: int,
+    user_id: tp.Optional[int],
     count: int = 5000,
     offset: int = 0,
     fields: tp.Optional[tp.List[str]] = None,
@@ -30,7 +31,6 @@ def get_friends(
     :param fields: Список полей, которые нужно получить для каждого пользователя.
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
-
     params = {
         "access_token": VK_CONFIG["access_token"],
         "v": VK_CONFIG["version"],
@@ -54,7 +54,7 @@ class MutualFriends(tp.TypedDict):
 def get_mutual(
     source_uid: tp.Optional[int] = None,
     target_uid: tp.Optional[int] = None,
-    target_uids: tp.Optional[tp.List[int]] = None,  # type: ignore
+    target_uids: tp.Optional[tp.List[int]] = None,
     order: str = "",
     count: tp.Optional[int] = None,
     offset: int = 0,
@@ -81,12 +81,7 @@ def get_mutual(
         response = session.get(f"friends.getMutual", params=params)
         if "error" in response.json() or not response.ok:
             raise APIError(response.json()["error"]["error_msg"])
-    return response.json()["response"]
-
-    result: tp.List[MutualFriends] = []
-    range_ = range(0, len(target_uids), 100)  # type: ignore
-    if progress is not None:
-        range_ = progress(range_)
+        return response.json()["response"]
 
     responses = []
     if progress is None:

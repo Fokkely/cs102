@@ -30,7 +30,6 @@ def get_friends(
     :param fields: Список полей, которые нужно получить для каждого пользователя.
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
-
     response = session.get(
         "friends.get",
         params={
@@ -42,7 +41,6 @@ def get_friends(
             "v": config.VK_CONFIG["version"],
         },
     )
-
     if "error" in response.json() or not response.ok:
         raise APIError(response.json()["error"]["error_msg"])
     return FriendsResponse(**response.json()["response"])
@@ -74,7 +72,6 @@ def get_mutual(
     :param offset: Смещение, необходимое  для выборки определенного подмножества общих друзей.
     :param progress: Callback для отображения прогресса.
     """
-
     if target_uid:
         return session.get(
             "friends.getMutual",
@@ -87,11 +84,7 @@ def get_mutual(
                 "access_token": config.VK_CONFIG["access_token"],
                 "v": config.VK_CONFIG["version"],
             },
-        )
-    if "error" in response.json() or not response.ok:
-        raise APIError(response.json()["error"]["error_msg"])
-    return FriendsResponse(**response.json()["response"])
-
+        ).json()["response"]
     result: tp.List[MutualFriends] = []
     range_ = range(0, len(target_uids), 100)  # type: ignore
     if progress is not None:
@@ -108,19 +101,14 @@ def get_mutual(
                 "access_token": config.VK_CONFIG["access_token"],
                 "v": config.VK_CONFIG["version"],
             },
+        ).json()["response"]
+        result.extend(
+            MutualFriends(
+                id=data["id"],
+                common_friends=data["common_friends"],
+                common_count=data["common_count"],
+            )
+            for data in response
         )
-    if "error" in response.json() or not response.ok:
-        raise APIError(response.json()["error"]["error_msg"])
-    return FriendsResponse(**response.json()["response"])
-
-    result.extend(
-        MutualFriends(
-            id=data["id"],
-            common_friends=data["common_friends"],
-            common_count=data["common_count"],
-        )
-        for data in response
-    )
-    time.sleep(0.5)
-
+        time.sleep(0.5)
     return result

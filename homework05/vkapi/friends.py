@@ -85,7 +85,10 @@ def get_mutual(
                 "access_token": config.VK_CONFIG["access_token"],
                 "v": config.VK_CONFIG["version"],
             },
-        ).json()["response"]
+        )
+        if "error" in response.json() or not response.ok:
+        raise APIError(response.json()["error"]["error_msg"])
+    return FriendsResponse(**response.json()["response"])
 
     result: tp.List[MutualFriends] = []
     range_ = range(0, len(target_uids), 100)  # type: ignore

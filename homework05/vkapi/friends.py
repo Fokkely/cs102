@@ -45,7 +45,8 @@ def get_friends(
     
     if response.status_code != 200:
         raise APIError
-    else: response = response.json()["response"]
+    else: 
+        response = response.json()["response"]
     
     return FriendsResponse(count=response["count"], items=response["items"])
 

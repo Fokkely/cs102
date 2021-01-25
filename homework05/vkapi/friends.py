@@ -13,8 +13,8 @@ QueryParams = tp.Optional[tp.Dict[str, tp.Union[str, int]]]
 class FriendsResponse:
     count: int
     items: tp.Union[tp.List[int], tp.List[tp.Dict[str, tp.Any]]]
-        
-        
+
+
 def get_friends(
     user_id: int,
     count: int = 5000,
@@ -30,7 +30,7 @@ def get_friends(
     :param fields: Список полей, которые нужно получить для каждого пользователя.
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
-    
+
     response = session.get(
         "friends.get",
         params={
@@ -42,7 +42,7 @@ def get_friends(
             "v": config.VK_CONFIG["version"],
         },
     )
-    
+
     if "error" in response.json() or not response.ok:
         raise APIError(response.json()["error"]["error_msg"])
     return FriendsResponse(**response.json()["response"])
@@ -52,8 +52,8 @@ class MutualFriends(tp.TypedDict):
     id: int
     common_friends: tp.List[int]
     common_count: int
-        
-        
+
+
 def get_mutual(
     source_uid: tp.Optional[int] = None,
     target_uid: tp.Optional[int] = None,
@@ -74,7 +74,7 @@ def get_mutual(
     :param offset: Смещение, необходимое  для выборки определенного подмножества общих друзей.
     :param progress: Callback для отображения прогресса.
     """
-    
+
     if target_uid:
         return session.get(
             "friends.getMutual",
@@ -122,5 +122,5 @@ def get_mutual(
         for data in response
     )
     time.sleep(0.5)
-        
+
     return result

@@ -113,14 +113,14 @@ def get_mutual(
         raise APIError(response.json()["error"]["error_msg"])
     return FriendsResponse(**response.json()["response"])
 
-        result.extend(
-            MutualFriends(
-                id=data["id"],
-                common_friends=data["common_friends"],
-                common_count=data["common_count"],
-            )
-            for data in response
+    result.extend(
+        MutualFriends(
+            id=data["id"],
+            common_friends=data["common_friends"],
+            common_count=data["common_count"],
         )
-        time.sleep(0.5)
+        for data in response
+    )
+    time.sleep(0.5)
         
     return result

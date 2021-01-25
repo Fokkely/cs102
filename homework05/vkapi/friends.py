@@ -30,7 +30,7 @@ def get_friends(
     :param fields: Список полей, которые нужно получить для каждого пользователя.
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
-    
+
     params = {
         "access_token": VK_CONFIG["access_token"],
         "v": VK_CONFIG["version"],

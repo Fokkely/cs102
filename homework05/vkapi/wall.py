@@ -65,10 +65,17 @@ def get_posts_2500(
         return wall_records;
         """
 
-response = session.post("execute", data=data)
-    if "error" in response.json() or not response.ok:
-        raise APIError(response.json()["error"]["error_msg"])
-    return response.json()["response"]["items"]
+    response = session.post(
+        url="execute",
+        data={
+            "code": code,
+            "access_token": config.VK_CONFIG["access_token"],
+            "v": config.VK_CONFIG["version"],
+        },
+    ).json()
+    if "response" in response:
+        return response["response"]
+    raise APIError
 
 
 def get_wall_execute(

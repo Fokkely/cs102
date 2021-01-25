@@ -45,7 +45,7 @@ def get_friends(
 
     if "error" in response.json() or not response.ok:
         raise APIError(response.json()["error"]["error_msg"])
-    return FriendsResponse(count=response["count"], items=response["items"])
+    return FriendsResponse(**response.json()["response"])
 
 
 class MutualFriends(tp.TypedDict):

@@ -12,11 +12,8 @@ QueryParams = tp.Optional[tp.Dict[str, tp.Union[str, int]]]
 
 @dataclasses.dataclass(frozen=True)
 class FriendsResponse:
-
     count: int
-
-
-items: tp.Union[tp.List[int], tp.List[tp.Dict[str, tp.Any]]]
+    items: tp.Union[tp.List[int], tp.List[tp.Dict[str, tp.Any]]]
 
 
 def get_friends(
@@ -25,7 +22,6 @@ def get_friends(
     offset: int = 0,
     fields: tp.Optional[tp.List[str]] = None,
 ) -> FriendsResponse:
-
     """
     Получить список идентификаторов друзей пользователя или расширенную информацию
     о друзьях пользователя (при использовании параметра fields).
@@ -44,22 +40,15 @@ def get_friends(
         "offset": offset,
     }
     response = session.get("friends.get", params=params)
-    if response.ok:
-        document = response.json()
-    else:
-        raise APIError("HTTPError")
-    if "error" in document:
-        raise APIError(document["error"]["error_msg"])
-    return FriendsResponse(**document["response"])
+    if "error" in response.json() or not response.ok:
+        raise APIError(response.json()["error"]["error_msg"])
+    return FriendsResponse(**response.json()["response"])
 
 
 class MutualFriends(tp.TypedDict):
-
     id: int
-
-
-common_friends: tp.List[int]
-common_count: int
+    common_friends: tp.List[int]
+    common_count: int
 
 
 def get_mutual(
@@ -71,7 +60,6 @@ def get_mutual(
     offset: int = 0,
     progress=None,
 ) -> tp.Union[tp.List[int], tp.List[MutualFriends]]:
-
     """
     Получить список идентификаторов общих друзей между парой пользователей.
     :param source_uid: Идентификатор пользователя, чьи друзья пересекаются с друзьями пользователя с идентификатором target_uid.
@@ -90,14 +78,10 @@ def get_mutual(
             "target_uid": target_uid,
             "order": order,
         }
-    response = session.get("friends.getMutual", params=params)
-    if response.ok:
-        document = response.json()
-    else:
-        raise APIError("HTTPError")
-    if "error" in document:
-        raise APIError(document["error"]["error_msg"])
-    return document["response"]
+        response = session.get(f"friends.getMutual", params=params)
+        if "error" in response.json() or not response.ok:
+            raise APIError(response.json()["error"]["error_msg"])
+        return response.json()["response"]
 
     responses = []
     if progress is None:
@@ -111,18 +95,17 @@ def get_mutual(
             "count": count if count is not None else "",
             "offset": offset + i * 100,
         }
-    response = session.get(f"friends.getMutual", params=params)
-    document = response.json()
-    if "error" in document or not response.ok:
-        raise APIError(document["error"]["error_msg"])
-    for arg in document["response"]:
-        responses.append(
-            MutualFriends(
-                id=arg["id"],
-                common_friends=arg["common_friends"],
-                common_count=arg["common_count"],
+        response = session.get(f"friends.getMutual", params=params)
+        if "error" in response.json() or not response.ok:
+            raise APIError(response.json()["error"]["error_msg"])
+        for j in response.json()["response"]:
+            responses.append(
+                MutualFriends(
+                    id=j["id"],
+                    common_friends=j["common_friends"],
+                    common_count=j["common_count"],
+                )
             )
-        )
-    if i % 3 == 2:
-        time.sleep(1)
+        if i % 3 == 2:
+            time.sleep(1)
     return responses

@@ -12,14 +12,14 @@ from vkapi.exceptions import APIError
 
 
 def get_posts_2500(
-        owner_id: str = "",
-        domain: str = "",
-        offset: int = 0,
-        count: int = 10,
-        max_count: int = 2500,
-        filter: str = "owner",
-        extended: int = 0,
-        fields: tp.Optional[tp.List[str]] = None,
+    owner_id: str = "",
+    domain: str = "",
+    offset: int = 0,
+    count: int = 10,
+    max_count: int = 2500,
+    filter: str = "owner",
+    extended: int = 0,
+    fields: tp.Optional[tp.List[str]] = None,
 ) -> tp.Dict[str, tp.Any]:
     idea = f"""
 var i = 0;
@@ -50,7 +50,6 @@ i = i + {max_count};
 return result;
 """
 
-
     data = {
         "code": idea,
         "access_token": VK_CONFIG["access_token"],
@@ -67,15 +66,15 @@ return result;
 
 
 def get_wall_execute(
-        owner_id: str = "",
-        domain: str = "",
-        offset: int = 0,
-        count: int = 10,
-        max_count: int = 2500,
-        filter: str = "owner",
-        extended: int = 0,
-        fields: tp.Optional[tp.List[str]] = None,
-        progress=None,
+    owner_id: str = "",
+    domain: str = "",
+    offset: int = 0,
+    count: int = 10,
+    max_count: int = 2500,
+    filter: str = "owner",
+    extended: int = 0,
+    fields: tp.Optional[tp.List[str]] = None,
+    progress=None,
 ) -> pd.DataFrame:
     """
     Возвращает список записей со стены пользователя или сообщества.
@@ -91,7 +90,6 @@ def get_wall_execute(
     :param progress: Callback для отображения прогресса.
     """
 
-
     finish = pd.DataFrame()
     if progress is None:
         progress = lambda x: x
@@ -99,7 +97,9 @@ def get_wall_execute(
     for _ in progress(range(math.ceil(count / 2500))):
         finish = finish.append(
             json_normalize(
-                get_posts_2500(owner_id, domain, offset, count, max_count, filter, extended, fields)
+                get_posts_2500(
+                    owner_id, domain, offset, count, max_count, filter, extended, fields
+                )
             )
         )
     time.sleep(1)

@@ -1,11 +1,12 @@
 # type: ignore
+import typing as tp
+
 import requests
 from bs4 import BeautifulSoup
-import typing as tp
 
 
 def extract_news(parser: BeautifulSoup) -> tp.List[tp.Dict[str, tp.Union[str, int]]]:
-    """ Extract news from a given web page """
+    """Extract news from a given web page"""
 
     def extract_first_integer_from_tag(tag: Tag, separator: str) -> int:
         try:
@@ -36,12 +37,12 @@ def extract_news(parser: BeautifulSoup) -> tp.List[tp.Dict[str, tp.Union[str, in
 
 
 def extract_next_page(parser: BeautifulSoup) -> str:
-    """ Extract next page URL """
+    """Extract next page URL"""
     return parser.find("a", {"class": "morelink"})["href"]
 
 
 def get_news(url: str, n_pages: int = 1) -> tp.List[tp.Dict[str, tp.Union[str, int]]]:
-    """ Collect news from a given web page """
+    """Collect news from a given web page"""
     news = []
     while n_pages:
         response = requests.get(url)

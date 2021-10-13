@@ -1,3 +1,4 @@
+# type: ignore
 import socket
 import textwrap
 import unittest
